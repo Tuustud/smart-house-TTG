@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart House System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Smart House System</h1>
+    </header>
+    <main>
+        <section id="controls">
+            <h2>Control Your Devices</h2>
+            <button id="light-toggle">Toggle Lights</button>
+            <button id="thermostat-set">Set Thermostat</button>
+        </section>
+        <section id="status">
+            <h2>Current Status</h2>
+            <div id="status-display"></div>
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
