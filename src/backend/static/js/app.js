@@ -1,27 +1,50 @@
 ﻿// This file contains the JavaScript code for the frontend application, handling client-side interactions and API calls.
 
 document.addEventListener('DOMContentLoaded', function() {
-    const statusElement = document.getElementById('led-status');
+    const ledStatus = document.getElementById('led-status');
+    const temperatureStatus = document.getElementById('temperature-status');
+    const humidityStatus = document.getElementById('humidity-status');
 
-    function updateStatus(data) {
-        statusElement.textContent = data.on ? 'LED is ON' : 'LED is OFF';
+    function updateLedStatus(data) {
+        ledStatus.textContent = data.on ? 'LED is ON' : 'LED is OFF';
     }
 
-    function fetchStatus() {
+    function updateTemperatureStatus(data) {
+        if (data.error) {
+            temperatureStatus.textContent = 'Temperature error: ' + data.error;
+            humidityStatus.textContent = '';
+            return;
+        }
+
+        temperatureStatus.textContent = 'Temperature: ' + data.temperature_c.toFixed(1) + ' °C';
+        humidityStatus.textContent = 'Humidity: ' + (data.humidity !== null ? data.humidity.toFixed(1) + ' %' : 'N/A');
+    }
+
+    function fetchLedStatus() {
         fetch('/api/led/status')
             .then(response => response.json())
-            .then(updateStatus)
+            .then(updateLedStatus)
             .catch(() => {
-                statusElement.textContent = 'Unable to fetch LED status.';
+                ledStatus.textContent = 'Unable to fetch LED status.';
+            });
+    }
+
+    function fetchTemperature() {
+        fetch('/api/temperature')
+            .then(response => response.json())
+            .then(updateTemperatureStatus)
+            .catch(() => {
+                temperatureStatus.textContent = 'Unable to fetch temperature.';
+                humidityStatus.textContent = '';
             });
     }
 
     function sendLedCommand(endpoint) {
         fetch(endpoint, { method: 'POST' })
             .then(response => response.json())
-            .then(updateStatus)
+            .then(updateLedStatus)
             .catch(() => {
-                statusElement.textContent = 'Unable to update LED state.';
+                ledStatus.textContent = 'Unable to update LED state.';
             });
     }
 
@@ -37,5 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sendLedCommand('/api/led/toggle');
     });
 
-    fetchStatus();
+    fetchLedStatus();
+    fetchTemperature();
+    setInterval(fetchTemperature, 10000);
 });

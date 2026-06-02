@@ -9,7 +9,7 @@ except ImportError:
 def main():
     parser = argparse.ArgumentParser(description='Control an LED on a Raspberry Pi GPIO pin.')
     parser.add_argument('action', choices=['on', 'off', 'toggle', 'status'], help='Action to perform')
-    parser.add_argument('--pin', type=int, default=4, help='GPIO pin number for the LED (default: 4)')
+    parser.add_argument('--pin', type=int, default=17, help='GPIO pin number for the LED (default: 17)')
     args = parser.parse_args()
 
     led = LED(args.pin)
