@@ -12,7 +12,7 @@ sensors = [
 
 @app.route('/')
 def home():
-    return "Welcome to the Smart House System!"
+    return render_template('index.html')
 
 @app.route('/api/sensors', methods=['GET'])
 def get_sensors():

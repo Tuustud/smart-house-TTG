@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const sensorContainer = document.getElementById('sensor-data');
         sensorContainer.innerHTML = ''; // Clear previous data
 
-        data.forEach(sensor => {
+        data.sensors.forEach(sensor => {
             const sensorElement = document.createElement('div');
             sensorElement.className = 'sensor';
-            sensorElement.innerHTML = `<strong>${sensor.name}</strong>: ${sensor.value}`;
+            sensorElement.innerHTML = `<strong>${sensor.type}</strong>: ${sensor.value}`;
             sensorContainer.appendChild(sensorElement);
         });
     }
