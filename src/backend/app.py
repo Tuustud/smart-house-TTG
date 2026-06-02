@@ -5,7 +5,7 @@ from gpiozero import LED
 app = Flask(__name__)
 CORS(app)
 
-led = LED(4)
+led = LED(17)
 
 @app.route('/')
 def home():
@@ -34,4 +34,4 @@ def led_toggle():
     return jsonify({'on': led.is_lit})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
