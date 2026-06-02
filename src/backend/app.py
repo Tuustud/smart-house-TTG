@@ -17,13 +17,7 @@ except Exception:
     adafruit_dht = None
     HAS_CIRCUITPY_DHT = False
 
-# Fallback to legacy Adafruit_DHT (if installed)
-try:
-    import Adafruit_DHT as legacy_Adafruit_DHT
-    HAS_LEGACY_DHT = True
-except Exception:
-    legacy_Adafruit_DHT = None
-    HAS_LEGACY_DHT = False
+HAS_LEGACY_DHT = False
 
 @app.route('/')
 def home():
@@ -85,14 +79,8 @@ def get_temperature():
             if not HAS_LEGACY_DHT:
                 return jsonify({'error': f'Failed to read DHT11 (CircuitPython): {e}'}), 500
 
-    # Fallback: legacy Adafruit_DHT
-    if HAS_LEGACY_DHT:
-        humidity, temperature = legacy_Adafruit_DHT.read_retry(legacy_Adafruit_DHT.DHT11, DHT11_PIN)
-        if temperature is None and humidity is None:
-            return jsonify({'error': 'Failed to read from DHT11 sensor (legacy Adafruit_DHT).'}), 500
-        return jsonify({'temperature_c': temperature, 'humidity': humidity})
-
-    return jsonify({'error': 'No DHT library installed. Install adafruit-circuitpython-dht and adafruit-blinka, or Adafruit_DHT.'}), 500
+    # No legacy fallback: require CircuitPython adafruit_dht/blinka to be installed
+    return jsonify({'error': 'adafruit_dht not available. Install adafruit-circuitpython-dht and adafruit-blinka.'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
