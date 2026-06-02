@@ -18,8 +18,10 @@
             <button id="led-toggle">Toggle LED</button>
         </section>
         <section id="status">
-            <h2>LED Status</h2>
-            <div id="led-status">Loading status...</div>
+            <h2>Current Status</h2>
+            <div id="led-status">Loading LED status...</div>
+            <div id="temperature-status">Loading temperature...</div>
+            <div id="humidity-status"></div>
         </section>
     </main>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

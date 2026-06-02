@@ -3,3 +3,4 @@ requests==2.26.0
 gpiozero==1.6.2
 Flask-Cors==3.0.10
 python-dotenv==0.19.1
+Adafruit_DHT==1.4.0
