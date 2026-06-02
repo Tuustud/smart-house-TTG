@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,13 +12,14 @@
     </header>
     <main>
         <section id="controls">
-            <h2>Control Your Devices</h2>
-            <button id="light-toggle">Toggle Lights</button>
-            <button id="thermostat-set">Set Thermostat</button>
+            <h2>LED Control</h2>
+            <button id="led-on">Turn LED On</button>
+            <button id="led-off">Turn LED Off</button>
+            <button id="led-toggle">Toggle LED</button>
         </section>
         <section id="status">
-            <h2>Current Status</h2>
-            <div id="sensor-data"></div>
+            <h2>LED Status</h2>
+            <div id="led-status">Loading status...</div>
         </section>
     </main>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
