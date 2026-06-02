@@ -1,35 +1,41 @@
-// This file contains the JavaScript code for the frontend application, handling client-side interactions and API calls.
+﻿// This file contains the JavaScript code for the frontend application, handling client-side interactions and API calls.
 
 document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = '/api'; // Base URL for API calls
+    const statusElement = document.getElementById('led-status');
 
-    // Function to fetch sensor data
-    function fetchSensorData() {
-        fetch(`${apiUrl}/sensors`)
+    function updateStatus(data) {
+        statusElement.textContent = data.on ? 'LED is ON' : 'LED is OFF';
+    }
+
+    function fetchStatus() {
+        fetch('/api/led/status')
             .then(response => response.json())
-            .then(data => {
-                // Update the UI with sensor data
-                updateSensorUI(data);
-            })
-            .catch(error => console.error('Error fetching sensor data:', error));
+            .then(updateStatus)
+            .catch(() => {
+                statusElement.textContent = 'Unable to fetch LED status.';
+            });
     }
 
-    // Function to update the UI with sensor data
-    function updateSensorUI(data) {
-        const sensorContainer = document.getElementById('sensor-data');
-        sensorContainer.innerHTML = ''; // Clear previous data
-
-        data.sensors.forEach(sensor => {
-            const sensorElement = document.createElement('div');
-            sensorElement.className = 'sensor';
-            sensorElement.innerHTML = `<strong>${sensor.type}</strong>: ${sensor.value}`;
-            sensorContainer.appendChild(sensorElement);
-        });
+    function sendLedCommand(endpoint) {
+        fetch(endpoint, { method: 'POST' })
+            .then(response => response.json())
+            .then(updateStatus)
+            .catch(() => {
+                statusElement.textContent = 'Unable to update LED state.';
+            });
     }
 
-    // Initial fetch of sensor data
-    fetchSensorData();
+    document.getElementById('led-on').addEventListener('click', function() {
+        sendLedCommand('/api/led/on');
+    });
 
-    // Set an interval to refresh sensor data every 10 seconds
-    setInterval(fetchSensorData, 10000);
+    document.getElementById('led-off').addEventListener('click', function() {
+        sendLedCommand('/api/led/off');
+    });
+
+    document.getElementById('led-toggle').addEventListener('click', function() {
+        sendLedCommand('/api/led/toggle');
+    });
+
+    fetchStatus();
 });
